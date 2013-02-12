@@ -1,4 +1,6 @@
-package com.example.hostkeeper;
+package com.sysiq.hostkeeper;
+
+import com.example.hostkeeper.R;
 
 import android.os.Bundle;
 import android.app.Activity;
