@@ -13,5 +13,15 @@
     <string name="pref_refresh_time_title">Refresh time</string>
     <string name="menu_preferences_title">Preferences</string>
     <string name="menu_preferences_title_cond">Settings</string>
+    <string name="service_button_text_on">Stop service</string>
+    <string name="service_button_text_off">Start service</string>
+    <string name="status_image_description">Host status</string>
+    <string name="text_view_default">Default text</string>
+    <string name="status_service_stoped">Service stoped</string>
+    <string name="status_service_started">Service started</string>
+    <string name="status_app_ofline">Application is ofline</string>
+    <string name="status_connection_error">Connection error</string>
+    <string name="status_host_ofline">Host is ofline</string>
+    <string name="status_host_online">Host is online</string>
 
 </resources>
