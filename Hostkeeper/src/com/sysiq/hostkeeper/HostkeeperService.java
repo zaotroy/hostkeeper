@@ -1,8 +1,10 @@
 package com.sysiq.hostkeeper;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -11,22 +13,25 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
-import android.os.Looper;
-import android.widget.RemoteViews;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 public class HostkeeperService extends Service {
 
-	private RemoteViews remoteViews;
-
 	private String hostURL = "";
 
 	private Integer refreshPeriod = 1;
+	
+	private String prefURLKey;
+	
+	private String prefRefreshPeriodKey;
 
 	Timer timer = new Timer();
 	HostkeeperTask hostkeeperTask = null;
@@ -35,18 +40,25 @@ public class HostkeeperService extends Service {
 	public IBinder onBind(Intent arg0) {
 		return null;
 	}
-	
+
 	@Override
 	public void onCreate() {
-		hostkeeperTask = new HostkeeperTask(this.getApplicationContext());
+		hostkeeperTask = new HostkeeperTask();
+		prefURLKey =  getApplication().getString(R.string.pref_host_url_key);
+		prefRefreshPeriodKey = getApplication().getString(R.string.pref_refresh_time_key);
 	}
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-		remoteViews = new RemoteViews(this.getApplicationContext().getPackageName(), R.layout.activity_main);
-		hostURL = "http://google.com";
-		refreshPeriod = 1;
-		timer.schedule(hostkeeperTask, 1000, refreshPeriod * 1000);
+		SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		hostURL = preference.getString(prefURLKey, "");
+		String refreshPeriodString = preference.getString(prefRefreshPeriodKey, "1");
+		try{
+			refreshPeriod = Integer.parseInt(refreshPeriodString);
+		}catch(Exception ex){
+			refreshPeriod = 1;
+		}
+		timer.schedule(hostkeeperTask, 0, refreshPeriod * 60 * 1000);
 		Toast.makeText(this, R.string.status_service_started, Toast.LENGTH_SHORT).show();
 	}
 
@@ -59,37 +71,30 @@ public class HostkeeperService extends Service {
 
 	private class HostkeeperTask extends TimerTask {
 
-		private Context context;
-
-		public HostkeeperTask(Context context) {
-			this.context = context;
-		}
-
 		@Override
 		public void run() {
-			Looper.prepare();
 			HostStatus hostStatus = checkHostOnline(hostURL);
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(KeeperHelper.KEY_DATA, new Date().toGMTString());
+			contentValues.put(KeeperHelper.KEY_HOST, hostURL);
+			contentValues.put(KeeperHelper.KEY_ID, UUID.randomUUID().toString());
 			switch (hostStatus) {
 			case APP_OFLINE:
-				remoteViews.setImageViewResource(R.id.current_status_image, R.drawable.ic_cross);
-				Toast.makeText(context, R.string.status_app_ofline, Toast.LENGTH_SHORT).show();
+				contentValues.put(KeeperHelper.KEY_STATUS, HostStatus.APP_OFLINE.toString());
 				break;
 			case CONNECTION_ERROR: {
-				remoteViews.setImageViewResource(R.id.current_status_image, R.drawable.ic_cross);
-				Toast.makeText(context, R.string.status_connection_error, Toast.LENGTH_SHORT).show();
+				contentValues.put(KeeperHelper.KEY_STATUS, HostStatus.CONNECTION_ERROR.toString());
 				break;
 			}
 			case HOST_OFLINE:
-				remoteViews.setImageViewResource(R.id.current_status_image, R.drawable.ic_cross);
-				Toast.makeText(context, R.string.status_host_ofline, Toast.LENGTH_SHORT).show();
+				contentValues.put(KeeperHelper.KEY_STATUS, HostStatus.HOST_OFLINE.toString());
 				break;
 			case HOST_ONLINE:
-				remoteViews.setImageViewResource(R.id.current_status_image, R.drawable.ic_tick);
-				Toast.makeText(context, R.string.status_host_online, Toast.LENGTH_SHORT).show();
+				contentValues.put(KeeperHelper.KEY_STATUS, HostStatus.HOST_ONLINE.toString());
+				break;
 			}
-			Looper.loop();
+			HostkeeperApplication.getInstance().getDB().insert(KeeperHelper.T_STATUS, null, contentValues);
 		}
-
 	}
 
 	public HostStatus checkHostOnline(String url) {

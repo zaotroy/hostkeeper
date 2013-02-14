@@ -9,20 +9,9 @@ public class HostkeeperApplication extends Application {
 	
 	private KeeperHelper keeperHelper;
 	
-	private static Boolean serviceStatus = false;
-	
 	public static HostkeeperApplication getInstance() {
 		return instance;
 	}
-	
-	public static Boolean getServiceStatus() {
-		return serviceStatus;
-	}
-
-	public static void setServiceStatus(Boolean serviceStatus) {
-		HostkeeperApplication.serviceStatus = serviceStatus;
-	}
-
 	
 	@Override
 	public void onCreate() {
