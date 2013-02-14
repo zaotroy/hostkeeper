@@ -9,11 +9,31 @@
         android:layout_height="wrap_content" >
 
         <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/host_name_label"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/host_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/host_name_value" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
             android:id="@+id/current_status_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/current_status_label"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/current_status_image"
@@ -22,17 +42,31 @@
             android:contentDescription="@string/status_image_description"
             android:src="@drawable/ic_question" />
 
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/timeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_view_default"
-            android:textSize="16sp" />
+            android:text="@string/time_label"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time_value"
+            android:textSize="20sp" />
 
     </TableRow>
 
     <TableRow
-        android:id="@+id/tableRow2"
+        android:id="@+id/tableRow4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -45,18 +79,6 @@
             android:textOff="@string/service_button_text_off"
             android:textOn="@string/service_button_text_on" />
 
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
     </TableRow>
 
 </TableLayout>

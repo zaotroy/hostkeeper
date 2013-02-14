@@ -1,15 +1,20 @@
 package com.sysiq.hostkeeper;
 
+import java.util.UUID;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -27,6 +32,21 @@ public class MainActivity extends Activity implements OnClickListener {
 			serviceButton.setChecked(true);
 		} else {
 			serviceButton.setChecked(false);
+		}
+		ImageView image = (ImageView) findViewById(R.id.current_status_image);
+		TextView timeLabel = (TextView) findViewById(R.id.time_label);
+		TextView hostLabel = (TextView) findViewById(R.id.host_name_label);
+		StatusRecord statusRecord = getLastStatusRecord();
+		if (null != statusRecord) {
+			timeLabel.setText(statusRecord.getDate());
+			hostLabel.setText(statusRecord.getHost());
+			if (HostStatus.APP_OFLINE.toString().equals(statusRecord.getHostStatus()) || HostStatus.CONNECTION_ERROR.equals(statusRecord.getHostStatus())) {
+				image.setImageResource(R.drawable.ic_question);
+			} else if (HostStatus.HOST_OFLINE.toString().equals(statusRecord.getHostStatus())) {
+				image.setImageResource(R.drawable.ic_cross);
+			} else if (HostStatus.HOST_ONLINE.toString().equals(statusRecord.getHostStatus())) {
+				image.setImageResource(R.drawable.ic_tick);
+			}
 		}
 	}
 
@@ -75,5 +95,32 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 		}
 		return false;
+	}
+
+	private StatusRecord getLastStatusRecord() {
+		StatusRecord statusRecord = null;
+		String query = "select " + KeeperHelper.KEY_ID + ", " +
+				KeeperHelper.KEY_HOST + ", " +
+				KeeperHelper.KEY_STATUS + ", " +
+				KeeperHelper.KEY_DATA +
+				" from " + KeeperHelper.T_STATUS +  " limit 1;";
+		Cursor cursor = HostkeeperApplication.getInstance().getDB().rawQuery(query, null);
+		if (null != cursor && cursor.moveToFirst()) {
+			statusRecord = new StatusRecord();
+			statusRecord.setId(UUID.fromString(cursor.getString(0)));
+			statusRecord.setHost(cursor.getString(1));
+			String statusString = cursor.getString(2);
+			if(HostStatus.APP_OFLINE.toString().equals(statusString)){
+				statusRecord.setHostStatus(HostStatus.APP_OFLINE);
+			}else if(HostStatus.CONNECTION_ERROR.toString().equals(statusString)){
+				statusRecord.setHostStatus(HostStatus.CONNECTION_ERROR);
+			}else if(HostStatus.HOST_OFLINE.toString().equals(statusString)){
+				statusRecord.setHostStatus(HostStatus.HOST_OFLINE);
+			}else if(HostStatus.HOST_ONLINE.toString().equals(statusString)){
+				statusRecord.setHostStatus(HostStatus.HOST_ONLINE);
+			}
+			statusRecord.setDate(cursor.getString(3));
+		}
+		return statusRecord;
 	}
 }
