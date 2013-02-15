@@ -19,7 +19,8 @@
             android:id="@+id/host_name_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/host_name_value" />
+            android:text="@string/host_name_value"
+            android:textSize="20sp" />
 
     </TableRow>
 

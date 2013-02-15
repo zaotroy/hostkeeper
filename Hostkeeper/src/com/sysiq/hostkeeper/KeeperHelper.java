@@ -8,14 +8,14 @@ import android.provider.BaseColumns;
 public class KeeperHelper extends SQLiteOpenHelper {
 
 	public static final String DB_NAME = "hostkeeper.db";
-	public static final Integer DB_VERSION = 2;
+	public static final Integer DB_VERSION = 3;
 	public static final String T_STATUS = "status";
 	public static final String KEY_ID = BaseColumns._ID;
 	public static final String KEY_HOST = "host";
 	public static final String KEY_STATUS = "status";
 	public static final String KEY_DATA = "date";
 
-	private static final String DB_CREATE = "create table " + T_STATUS + " ( " + KEY_ID + " text primary key, " + KEY_HOST + " text, " + KEY_STATUS + " text, " + KEY_DATA + " integer " + " );";
+	private static final String DB_CREATE = "create table " + T_STATUS + " ( " + KEY_ID + " integer primary key autoincrement, " + KEY_HOST + " text, " + KEY_STATUS + " text, " + KEY_DATA + " integer " + " );";
 
 	public KeeperHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);

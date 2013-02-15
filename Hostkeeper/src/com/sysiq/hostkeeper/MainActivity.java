@@ -1,6 +1,6 @@
 package com.sysiq.hostkeeper;
 
-import java.util.UUID;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,13 +39,13 @@ public class MainActivity extends Activity implements OnClickListener {
 		TextView hostLabel = (TextView) findViewById(R.id.host_name_label);
 		StatusRecord statusRecord = getLastStatusRecord();
 		if (null != statusRecord) {
-			timeLabel.setText(statusRecord.getDate());
+			timeLabel.setText(DateUtils.getRelativeTimeSpanString(this, new Date(statusRecord.getDate()).getTime()));
 			hostLabel.setText(statusRecord.getHost());
-			if (HostStatus.APP_OFLINE.toString().equals(statusRecord.getHostStatus()) || HostStatus.CONNECTION_ERROR.equals(statusRecord.getHostStatus())) {
+			if (HostStatus.APP_OFLINE.equals(statusRecord.getHostStatus()) || HostStatus.CONNECTION_ERROR.equals(statusRecord.getHostStatus())) {
 				image.setImageResource(R.drawable.ic_question);
-			} else if (HostStatus.HOST_OFLINE.toString().equals(statusRecord.getHostStatus())) {
+			} else if (HostStatus.HOST_OFLINE.equals(statusRecord.getHostStatus())) {
 				image.setImageResource(R.drawable.ic_cross);
-			} else if (HostStatus.HOST_ONLINE.toString().equals(statusRecord.getHostStatus())) {
+			} else if (HostStatus.HOST_ONLINE.equals(statusRecord.getHostStatus())) {
 				image.setImageResource(R.drawable.ic_tick);
 			}
 		}
@@ -103,11 +104,11 @@ public class MainActivity extends Activity implements OnClickListener {
 				KeeperHelper.KEY_HOST + ", " +
 				KeeperHelper.KEY_STATUS + ", " +
 				KeeperHelper.KEY_DATA +
-				" from " + KeeperHelper.T_STATUS +  " limit 1;";
+				" from " + KeeperHelper.T_STATUS + " order by " + KeeperHelper.KEY_ID + " desc limit 1;";
 		Cursor cursor = HostkeeperApplication.getInstance().getDB().rawQuery(query, null);
 		if (null != cursor && cursor.moveToFirst()) {
 			statusRecord = new StatusRecord();
-			statusRecord.setId(UUID.fromString(cursor.getString(0)));
+			statusRecord.setId(cursor.getInt(0));
 			statusRecord.setHost(cursor.getString(1));
 			String statusString = cursor.getString(2);
 			if(HostStatus.APP_OFLINE.toString().equals(statusString)){

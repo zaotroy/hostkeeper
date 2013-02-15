@@ -1,10 +1,9 @@
 package com.sysiq.hostkeeper;
 
-import java.util.UUID;
 
 public class StatusRecord {
 	
-	private UUID id;
+	private Integer id;
 	
 	private String host;
 	
@@ -12,11 +11,11 @@ public class StatusRecord {
 	
 	private String date;
 	
-	public UUID getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

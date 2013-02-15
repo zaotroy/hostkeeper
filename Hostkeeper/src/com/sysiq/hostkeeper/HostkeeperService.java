@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -75,9 +74,8 @@ public class HostkeeperService extends Service {
 		public void run() {
 			HostStatus hostStatus = checkHostOnline(hostURL);
 			ContentValues contentValues = new ContentValues();
-			contentValues.put(KeeperHelper.KEY_DATA, new Date().toGMTString());
+			contentValues.put(KeeperHelper.KEY_DATA, new Date().toString());
 			contentValues.put(KeeperHelper.KEY_HOST, hostURL);
-			contentValues.put(KeeperHelper.KEY_ID, UUID.randomUUID().toString());
 			switch (hostStatus) {
 			case APP_OFLINE:
 				contentValues.put(KeeperHelper.KEY_STATUS, HostStatus.APP_OFLINE.toString());
