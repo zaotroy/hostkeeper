@@ -59,9 +59,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener, T
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
+		Intent intent = null;
 		switch (id) {
 		case R.id.menu_preferences:
-			Intent intent = new Intent(this, PrefsActivity.class);
+			intent = new Intent(this, PrefsActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.menu_pie_chart:
+			intent = new Intent(this, PieChartActivity.class);
 			startActivity(intent);
 			return true;
 		default:
@@ -119,36 +124,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, T
 		}
 		return false;
 	}
-
-	//
-	// private StatusRecord getLastStatusRecord() {
-	// StatusRecord statusRecord = null;
-	// String query = "select " + KeeperHelper.KEY_ID + ", " +
-	// KeeperHelper.KEY_HOST + ", " +
-	// KeeperHelper.KEY_STATUS + ", " +
-	// KeeperHelper.KEY_DATA +
-	// " from " + KeeperHelper.T_STATUS + " order by " + KeeperHelper.KEY_ID +
-	// " desc limit 1;";
-	// Cursor cursor =
-	// HostkeeperApplication.getInstance().getDB().rawQuery(query, null);
-	// if (null != cursor && cursor.moveToFirst()) {
-	// statusRecord = new StatusRecord();
-	// statusRecord.setId(cursor.getInt(0));
-	// statusRecord.setHost(cursor.getString(1));
-	// String statusString = cursor.getString(2);
-	// if(HostStatus.APP_OFLINE.toString().equals(statusString)){
-	// statusRecord.setHostStatus(HostStatus.APP_OFLINE);
-	// }else if(HostStatus.CONNECTION_ERROR.toString().equals(statusString)){
-	// statusRecord.setHostStatus(HostStatus.CONNECTION_ERROR);
-	// }else if(HostStatus.HOST_OFLINE.toString().equals(statusString)){
-	// statusRecord.setHostStatus(HostStatus.HOST_OFLINE);
-	// }else if(HostStatus.HOST_ONLINE.toString().equals(statusString)){
-	// statusRecord.setHostStatus(HostStatus.HOST_ONLINE);
-	// }
-	// statusRecord.setDate(cursor.getString(3));
-	// }
-	// return statusRecord;
-	// }
 
 	private void initialiseTabHost(Bundle bundle) {
 		tabHost = (TabHost) findViewById(android.R.id.tabhost);

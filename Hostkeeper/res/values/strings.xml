@@ -30,5 +30,12 @@
     <string name="title_activity_status">StatusActivity</string>
     <string name="tab_all_label">All statuses</string>
     <string name="tab_failure_statuses">Failure statuses</string>
+    <string name="menu_history_of_checks_title">History of checks</string>
+    <string name="menu_history_of_checks_title_cond">History of checks</string>
+    <string name="menu_pie_chart_title">Pie chart</string>
+    <string name="menu_pie_chart_title_cond">Pie chart</string>
+    <string name="title_activity_pie_chart">PieChartActivity</string>
+    <string name="label_pie_ofline">Ofline</string>
+    <string name="label_pie_online">Online</string>
 
 </resources>
