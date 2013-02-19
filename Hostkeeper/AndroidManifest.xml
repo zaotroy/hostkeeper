@@ -33,6 +33,11 @@
 
         <service android:name="com.sysiq.hostkeeper.HostkeeperService" >
         </service>
+
+        <activity
+            android:name="com.sysiq.hostkeeper.PieChartActivity"
+            android:label="@string/title_activity_pie_chart" >
+        </activity>
     </application>
 
 </manifest>
