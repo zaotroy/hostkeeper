@@ -5,10 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-public class KeeperHelper extends SQLiteOpenHelper {
+public class HostkeeperHelper extends SQLiteOpenHelper {
 
 	public static final String DB_NAME = "hostkeeper.db";
-	public static final Integer DB_VERSION = 3;
+	public static final Integer DB_VERSION = 4;
 	public static final String T_STATUS = "status";
 	public static final String KEY_ID = BaseColumns._ID;
 	public static final String KEY_HOST = "host";
@@ -17,7 +17,7 @@ public class KeeperHelper extends SQLiteOpenHelper {
 
 	private static final String DB_CREATE = "create table " + T_STATUS + " ( " + KEY_ID + " integer primary key autoincrement, " + KEY_HOST + " text, " + KEY_STATUS + " text, " + KEY_DATA + " integer " + " );";
 
-	public KeeperHelper(Context context) {
+	public HostkeeperHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 	}
 

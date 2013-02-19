@@ -27,9 +27,9 @@ public class HostkeeperService extends Service {
 	private String hostURL = "";
 
 	private Integer refreshPeriod = 1;
-	
+
 	private String prefURLKey;
-	
+
 	private String prefRefreshPeriodKey;
 
 	Timer timer = new Timer();
@@ -43,7 +43,7 @@ public class HostkeeperService extends Service {
 	@Override
 	public void onCreate() {
 		hostkeeperTask = new HostkeeperTask();
-		prefURLKey =  getApplication().getString(R.string.pref_host_url_key);
+		prefURLKey = getApplication().getString(R.string.pref_host_url_key);
 		prefRefreshPeriodKey = getApplication().getString(R.string.pref_refresh_time_key);
 	}
 
@@ -52,9 +52,9 @@ public class HostkeeperService extends Service {
 		SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		hostURL = preference.getString(prefURLKey, "");
 		String refreshPeriodString = preference.getString(prefRefreshPeriodKey, "1");
-		try{
+		try {
 			refreshPeriod = Integer.parseInt(refreshPeriodString);
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			refreshPeriod = 1;
 		}
 		timer.schedule(hostkeeperTask, 0, refreshPeriod * 60 * 1000);
@@ -74,24 +74,27 @@ public class HostkeeperService extends Service {
 		public void run() {
 			HostStatus hostStatus = checkHostOnline(hostURL);
 			ContentValues contentValues = new ContentValues();
-			contentValues.put(KeeperHelper.KEY_DATA, new Date().toString());
-			contentValues.put(KeeperHelper.KEY_HOST, hostURL);
+			contentValues.put(HostkeeperHelper.KEY_DATA, new Date().toString());
+			contentValues.put(HostkeeperHelper.KEY_HOST, hostURL);
 			switch (hostStatus) {
 			case APP_OFLINE:
-				contentValues.put(KeeperHelper.KEY_STATUS, HostStatus.APP_OFLINE.toString());
 				break;
 			case CONNECTION_ERROR: {
-				contentValues.put(KeeperHelper.KEY_STATUS, HostStatus.CONNECTION_ERROR.toString());
+				saveStatustToDB(contentValues, HostStatus.HOST_OFLINE);
 				break;
 			}
 			case HOST_OFLINE:
-				contentValues.put(KeeperHelper.KEY_STATUS, HostStatus.HOST_OFLINE.toString());
+				saveStatustToDB(contentValues, HostStatus.HOST_OFLINE);
 				break;
 			case HOST_ONLINE:
-				contentValues.put(KeeperHelper.KEY_STATUS, HostStatus.HOST_ONLINE.toString());
+				saveStatustToDB(contentValues, HostStatus.HOST_ONLINE);
 				break;
 			}
-			HostkeeperApplication.getInstance().getDB().insert(KeeperHelper.T_STATUS, null, contentValues);
+		}
+
+		private void saveStatustToDB(ContentValues contentValues, HostStatus hostStatus) {
+			contentValues.put(HostkeeperHelper.KEY_STATUS, hostStatus.toString());
+			HostkeeperApplication.getInstance().getDB().insert(HostkeeperHelper.T_STATUS, null, contentValues);
 		}
 	}
 

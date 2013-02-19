@@ -7,7 +7,7 @@ public class HostkeeperApplication extends Application {
 	
 	private static HostkeeperApplication instance;
 	
-	private KeeperHelper keeperHelper;
+	private HostkeeperHelper keeperHelper;
 	
 	public static HostkeeperApplication getInstance() {
 		return instance;
@@ -17,7 +17,7 @@ public class HostkeeperApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		instance = this;
-		keeperHelper = new KeeperHelper(this);
+		keeperHelper = new HostkeeperHelper(this);
 	}
 	
 	public SQLiteDatabase getDB(){
