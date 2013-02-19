@@ -27,5 +27,8 @@
     <string name="host_name_value"></string>
     <string name="time_label">Last time: </string>
     <string name="time_value"></string>
+    <string name="title_activity_status">StatusActivity</string>
+    <string name="tab_all_label">All statuses</string>
+    <string name="tab_failure_statuses">Failure statuses</string>
 
 </resources>
