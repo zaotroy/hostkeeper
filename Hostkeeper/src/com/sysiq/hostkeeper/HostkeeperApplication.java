@@ -3,6 +3,9 @@ package com.sysiq.hostkeeper;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
+/*
+ * 
+ */
 public class HostkeeperApplication extends Application {
 	
 	private static HostkeeperApplication instance;
