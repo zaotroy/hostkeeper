@@ -8,9 +8,9 @@ import android.support.v4.widget.SimpleCursorAdapter;
 public class TabAllStatusesFragment extends ListFragment {
 	
 	private static final String[] FROM = {
-		HostkeeperHelper.KEY_HOST,
-		HostkeeperHelper.KEY_STATUS,
-		HostkeeperHelper.KEY_DATA
+		StatusContract.Columns.HOST,
+		StatusContract.Columns.STATUS,
+		StatusContract.Columns.DATE
 	};
 	
 	private static final int[] TO = {
@@ -47,7 +47,7 @@ public class TabAllStatusesFragment extends ListFragment {
 	}
 	
 	private void initListData() {
-		cursor = HostkeeperApplication.getInstance().getDB().query(HostkeeperHelper.T_STATUS, null, null, null, null, null, HostkeeperHelper.KEY_DATA + " desc");
+		cursor = getActivity().getContentResolver().query(StatusContract.CONTENT_URI, null, null, null, null);
 		simpleCursorAdapter = new HostkeeperCursorAdapter(getActivity().getApplicationContext(), R.layout.status_row, cursor, FROM, TO, 0);
 		setListAdapter(simpleCursorAdapter);
 	}

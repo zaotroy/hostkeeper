@@ -26,8 +26,8 @@ public class HostkeeperCursorAdapter extends SimpleCursorAdapter {
         TextView textView = (TextView) view.findViewById(R.id.date_label);
         ImageView imageView = (ImageView) view.findViewById(R.id.status_image);
         Cursor cursorLocal = (Cursor) getItem(position);
-        String status = cursorLocal.getString(cursorLocal.getColumnIndex(HostkeeperHelper.KEY_STATUS));
-        String date = cursorLocal.getString(cursorLocal.getColumnIndex(HostkeeperHelper.KEY_DATA));
+        String status = cursorLocal.getString(cursorLocal.getColumnIndex(StatusContract.Columns.STATUS));
+        String date = cursorLocal.getString(cursorLocal.getColumnIndex(StatusContract.Columns.DATE));
         if(HostStatus.HOST_OFLINE.toString().equals(status)){
         	imageView.setImageResource(R.drawable.ic_red_point);
         }else if(HostStatus.HOST_ONLINE.toString().equals(status)){

@@ -74,8 +74,8 @@ public class HostkeeperService extends Service {
 		public void run() {
 			HostStatus hostStatus = checkHostOnline(hostURL);
 			ContentValues contentValues = new ContentValues();
-			contentValues.put(HostkeeperHelper.KEY_DATA, new Date().toString());
-			contentValues.put(HostkeeperHelper.KEY_HOST, hostURL);
+			contentValues.put(StatusContract.Columns.DATE, new Date().toString());
+			contentValues.put(StatusContract.Columns.HOST, hostURL);
 			switch (hostStatus) {
 			case APP_OFLINE:
 				break;
@@ -93,8 +93,8 @@ public class HostkeeperService extends Service {
 		}
 
 		private void saveStatustToDB(ContentValues contentValues, HostStatus hostStatus) {
-			contentValues.put(HostkeeperHelper.KEY_STATUS, hostStatus.toString());
-			HostkeeperApplication.getInstance().getDB().insert(HostkeeperHelper.T_STATUS, null, contentValues);
+			contentValues.put(StatusContract.Columns.STATUS, hostStatus.toString());
+			getContentResolver().insert(StatusContract.CONTENT_URI, contentValues);
 		}
 	}
 

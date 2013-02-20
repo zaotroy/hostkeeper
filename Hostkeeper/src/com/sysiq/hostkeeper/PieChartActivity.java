@@ -9,8 +9,6 @@ import android.widget.LinearLayout;
 
 public class PieChartActivity extends Activity {
 
-	private static final String COUNT_QUERY = "select * from " + HostkeeperHelper.T_STATUS + " where " + HostkeeperHelper.KEY_STATUS + "=?";
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,10 +21,10 @@ public class PieChartActivity extends Activity {
 	}
 
 	private int getRowCountByStatus(HostStatus hostStatus) {
-		String[] param = new String[]{
+		String[] params = new String[]{
 			hostStatus.toString()
 		};
-		Cursor cursor = HostkeeperApplication.getInstance().getDB().rawQuery(COUNT_QUERY, param);
+		Cursor cursor = getContentResolver().query(StatusContract.CONTENT_URI, null, StatusContract.Columns.STATUS + "=?", params, null);
 		int rowCount = cursor.getCount();
 		return rowCount;
 	}

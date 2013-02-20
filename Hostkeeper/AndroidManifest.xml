@@ -38,6 +38,7 @@
             android:name="com.sysiq.hostkeeper.PieChartActivity"
             android:label="@string/title_activity_pie_chart" >
         </activity>
+        <provider android:name="StatusProvider" android:authorities="com.sysiq.hostkeeper.provider"></provider>
     </application>
 
 </manifest>
