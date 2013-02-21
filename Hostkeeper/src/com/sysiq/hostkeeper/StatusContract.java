@@ -25,7 +25,7 @@ public class StatusContract {
 		
 		public static final String DATE = "date";
 		
-		public static final String DEFAULT_SOTR_ODRER = DATE + " desc";
+		public static final String DEFAULT_SOTR_ODRER = _ID + " desc";
 		
 	}
 	
